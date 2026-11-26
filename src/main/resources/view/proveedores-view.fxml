@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import atlantafx.base.controls.CustomTextField?>
+<?import com.taller.mecanico.ui.WcPaginador?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.taller.mecanico.controller.WcProveedorController"
+      styleClass="pagina">
+
+    <fx:define>
+        <VBox fx:id="wcPanelFormulario" styleClass="drawer"
+              prefWidth="440.0" maxWidth="440.0" maxHeight="Infinity">
+            <HBox styleClass="drawer-header">
+                <StackPane styleClass="drawer-icono"><FontIcon iconLiteral="fth-briefcase"/></StackPane>
+                <VBox spacing="2.0" HBox.hgrow="ALWAYS">
+                    <Label fx:id="wcLblTituloFormulario" text="Nuevo proveedor" styleClass="drawer-titulo"/>
+                    <Label fx:id="wcLblSubtituloFormulario" text="Empresa que vende repuestos al taller"
+                           styleClass="drawer-subtitulo"/>
+                </VBox>
+                <Button onAction="#wcOnCerrarPanel" styleClass="flat,button-circle">
+                    <graphic><FontIcon iconLiteral="fth-x"/></graphic>
+                </Button>
+            </HBox>
+
+            <ScrollPane fitToWidth="true" styleClass="drawer-scroll" VBox.vgrow="ALWAYS">
+                <VBox styleClass="drawer-body">
+                    <VBox styleClass="campo">
+                        <Label text="RUC *" styleClass="campo-label"/>
+                        <TextField fx:id="wcTxtRuc" promptText="11 digitos"/>
+                        <Label styleClass="campo-error" visible="false" managed="false"/>
+                    </VBox>
+
+                    <VBox styleClass="campo">
+                        <Label text="Razon social *" styleClass="campo-label"/>
+                        <TextField fx:id="wcTxtRazonSocial" promptText="Ej. AUTOPARTES DEL SUR S.A.C."/>
+                        <Label styleClass="campo-error" visible="false" managed="false"/>
+                    </VBox>
+
+                    <VBox styleClass="campo">
+                        <Label text="Direccion" styleClass="campo-label"/>
+                        <TextField fx:id="wcTxtDireccion" promptText="Opcional"/>
+                        <Label styleClass="campo-error" visible="false" managed="false"/>
+                    </VBox>
+
+                    <VBox styleClass="campo">
+                        <Label text="Telefono" styleClass="campo-label"/>
+                        <TextField fx:id="wcTxtTelefono" promptText="Opcional, de 6 a 9 digitos"/>
+                        <Label styleClass="campo-error" visible="false" managed="false"/>
+                    </VBox>
+                </VBox>
+            </ScrollPane>
+
+            <HBox styleClass="drawer-footer">
+                <Button text="Cancelar" onAction="#wcOnCerrarPanel" styleClass="button-outlined"/>
+                <Button text="Guardar" onAction="#wcOnGuardar" styleClass="accent" defaultButton="true">
+                    <graphic><FontIcon iconLiteral="fth-check"/></graphic>
+                </Button>
+            </HBox>
+        </VBox>
+
+        <VBox fx:id="wcPanelCompras" styleClass="drawer"
+              prefWidth="640.0" maxWidth="640.0" maxHeight="Infinity">
+            <HBox styleClass="drawer-header">
+                <StackPane styleClass="drawer-icono"><FontIcon iconLiteral="fth-archive"/></StackPane>
+                <VBox spacing="2.0" HBox.hgrow="ALWAYS">
+                    <Label fx:id="wcLblTituloCompras" styleClass="drawer-titulo"/>
+                    <Label fx:id="wcLblSubtituloCompras" styleClass="drawer-subtitulo"/>
+                </VBox>
+                <Button onAction="#wcOnCerrarPanel" styleClass="flat,button-circle">
+                    <graphic><FontIcon iconLiteral="fth-x"/></graphic>
+                </Button>
+            </HBox>
+            <VBox styleClass="drawer-body" VBox.vgrow="ALWAYS">
+                <TableView fx:id="wcTablaCompras" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="wcColCompraCodigo"    text="CODIGO"    prefWidth="100.0"/>
+                        <TableColumn fx:id="wcColCompraFecha"     text="FECHA"     prefWidth="110.0"/>
+                        <TableColumn fx:id="wcColCompraDocumento" text="DOCUMENTO" prefWidth="180.0"/>
+                        <TableColumn fx:id="wcColCompraTotal"     text="TOTAL"     prefWidth="110.0"/>
+                        <TableColumn fx:id="wcColCompraEstado"    text="ESTADO"    prefWidth="110.0"/>
+                    </columns>
+                </TableView>
+            </VBox>
+        </VBox>
+    </fx:define>
+
+    <HBox styleClass="pagina-cabecera">
+        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+            <Label text="Proveedores" styleClass="pagina-titulo"/>
+            <Label text="Empresas que abastecen de repuestos al taller" styleClass="pagina-subtitulo"/>
+        </VBox>
+        <Button text="Nuevo proveedor" onAction="#wcOnNuevo" styleClass="accent,boton-principal">
+            <graphic><FontIcon iconLiteral="fth-plus"/></graphic>
+        </Button>
+    </HBox>
+
+    <VBox styleClass="tarjeta" VBox.vgrow="ALWAYS">
+        <HBox styleClass="barra-herramientas">
+            <CustomTextField fx:id="wcTxtBuscar" promptText="Buscar por RUC o razon social"
+                             styleClass="buscador" prefWidth="340.0">
+                <left><FontIcon iconLiteral="fth-search"/></left>
+            </CustomTextField>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button fx:id="wcBtnCompras" text="Compras" onAction="#wcOnCompras" styleClass="button-outlined">
+                <graphic><FontIcon iconLiteral="fth-archive"/></graphic>
+            </Button>
+            <Button fx:id="wcBtnEditar" text="Editar" onAction="#wcOnEditar" styleClass="button-outlined">
+                <graphic><FontIcon iconLiteral="fth-edit-2"/></graphic>
+            </Button>
+            <Button fx:id="wcBtnEliminar" text="Eliminar" onAction="#wcOnEliminar"
+                    styleClass="button-outlined,danger">
+                <graphic><FontIcon iconLiteral="fth-trash-2"/></graphic>
+            </Button>
+        </HBox>
+
+        <TableView fx:id="wcTabla" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="wcColRuc"         text="RUC"          prefWidth="130.0"/>
+                <TableColumn fx:id="wcColRazonSocial" text="RAZON SOCIAL" prefWidth="320.0"/>
+                <TableColumn fx:id="wcColDireccion"   text="DIRECCION"    prefWidth="260.0"/>
+                <TableColumn fx:id="wcColTelefono"    text="TELEFONO"     prefWidth="120.0"/>
+            </columns>
+        </TableView>
+
+        <WcPaginador fx:id="wcPaginador"/>
+    </VBox>
+</VBox>

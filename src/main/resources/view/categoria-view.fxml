@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import atlantafx.base.controls.CustomTextField?>
+<?import com.taller.mecanico.ui.WcPaginador?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.taller.mecanico.controller.WcCategoriaController"
+      styleClass="pagina">
+
+    <fx:define>
+        <VBox fx:id="wcPanelFormulario" styleClass="drawer"
+              prefWidth="440.0" maxWidth="440.0" maxHeight="Infinity">
+            <HBox styleClass="drawer-header">
+                <StackPane styleClass="drawer-icono"><FontIcon iconLiteral="fth-tag"/></StackPane>
+                <VBox spacing="2.0" HBox.hgrow="ALWAYS">
+                    <Label fx:id="wcLblTituloFormulario" text="Nueva categoria" styleClass="drawer-titulo"/>
+                    <Label fx:id="wcLblSubtituloFormulario" text="Agrupa tus repuestos por categoria"
+                           styleClass="drawer-subtitulo"/>
+                </VBox>
+                <Button onAction="#wcOnCerrarFormulario" styleClass="flat,button-circle">
+                    <graphic><FontIcon iconLiteral="fth-x"/></graphic>
+                </Button>
+            </HBox>
+
+            <ScrollPane fitToWidth="true" styleClass="drawer-scroll" VBox.vgrow="ALWAYS">
+                <VBox styleClass="drawer-body">
+                    <Label text="DATOS GENERALES" styleClass="seccion-form"/>
+
+                    <VBox styleClass="campo">
+                        <Label text="Codigo *" styleClass="campo-label"/>
+                        <CustomTextField fx:id="wcTxtCodigoCategoria" promptText="Ej. CAT-001">
+                            <left><FontIcon iconLiteral="fth-hash"/></left>
+                        </CustomTextField>
+                        <Label styleClass="campo-error" visible="false" managed="false"/>
+                    </VBox>
+
+                    <VBox styleClass="campo">
+                        <Label text="Nombre *" styleClass="campo-label"/>
+                        <TextField fx:id="wcTxtNombre" promptText="Ej. Bebidas"/>
+                        <Label styleClass="campo-error" visible="false" managed="false"/>
+                    </VBox>
+
+                    <VBox styleClass="campo">
+                        <Label text="Descripcion" styleClass="campo-label"/>
+                        <TextArea fx:id="wcTxtDescripcion" promptText="Opcional: describe brevemente la categoria"
+                                  prefRowCount="4" wrapText="true"/>
+                        <Label styleClass="campo-error" visible="false" managed="false"/>
+                    </VBox>
+                </VBox>
+            </ScrollPane>
+
+            <HBox styleClass="drawer-footer">
+                <Button text="Cancelar" onAction="#wcOnCerrarFormulario" styleClass="button-outlined"/>
+                <Button text="Guardar" onAction="#wcOnGuardar" styleClass="accent" defaultButton="true">
+                    <graphic><FontIcon iconLiteral="fth-check"/></graphic>
+                </Button>
+            </HBox>
+        </VBox>
+    </fx:define>
+
+    <HBox styleClass="pagina-cabecera">
+        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+            <Label text="Categorias" styleClass="pagina-titulo"/>
+            <Label text="Organiza el catalogo de repuestos por categorias"
+                   styleClass="pagina-subtitulo"/>
+        </VBox>
+        <Button text="Nueva categoria" onAction="#wcOnNuevo" styleClass="accent,boton-principal">
+            <graphic><FontIcon iconLiteral="fth-plus"/></graphic>
+        </Button>
+    </HBox>
+
+    <VBox styleClass="tarjeta" VBox.vgrow="ALWAYS">
+        <HBox styleClass="barra-herramientas">
+            <CustomTextField fx:id="wcTxtBuscar" promptText="Buscar por nombre, codigo o descripcion"
+                             styleClass="buscador" prefWidth="340.0">
+                <left><FontIcon iconLiteral="fth-search"/></left>
+            </CustomTextField>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button fx:id="wcBtnEditar" text="Editar" onAction="#wcOnEditar" styleClass="button-outlined">
+                <graphic><FontIcon iconLiteral="fth-edit-2"/></graphic>
+            </Button>
+            <Button fx:id="wcBtnEliminar" text="Eliminar" onAction="#wcOnEliminar"
+                    styleClass="button-outlined,danger">
+                <graphic><FontIcon iconLiteral="fth-trash-2"/></graphic>
+            </Button>
+        </HBox>
+
+        <TableView fx:id="wcTabla" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="wcColId"          text="ID"          prefWidth="70.0" maxWidth="90.0"/>
+                <TableColumn fx:id="wcColCodigo"      text="CODIGO"      prefWidth="150.0"/>
+                <TableColumn fx:id="wcColNombre"      text="NOMBRE"      prefWidth="220.0"/>
+                <TableColumn fx:id="wcColDescripcion" text="DESCRIPCION" prefWidth="360.0"/>
+            </columns>
+        </TableView>
+
+        <WcPaginador fx:id="wcPaginador"/>
+    </VBox>
+</VBox>

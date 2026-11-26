@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import atlantafx.base.controls.CustomTextField?>
+<?import atlantafx.base.controls.ToggleSwitch?>
+<?import com.taller.mecanico.ui.WcPaginador?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.taller.mecanico.controller.WcServicioController"
+      styleClass="pagina">
+
+    <fx:define>
+        <VBox fx:id="wcPanelFormulario" styleClass="drawer"
+              prefWidth="440.0" maxWidth="440.0" maxHeight="Infinity">
+            <HBox styleClass="drawer-header">
+                <StackPane styleClass="drawer-icono"><FontIcon iconLiteral="fth-tool"/></StackPane>
+                <VBox spacing="2.0" HBox.hgrow="ALWAYS">
+                    <Label fx:id="wcLblTituloFormulario" text="Nuevo servicio" styleClass="drawer-titulo"/>
+                    <Label fx:id="wcLblSubtituloFormulario" text="Mano de obra que ofrece el taller"
+                           styleClass="drawer-subtitulo"/>
+                </VBox>
+                <Button onAction="#wcOnCerrarFormulario" styleClass="flat,button-circle">
+                    <graphic><FontIcon iconLiteral="fth-x"/></graphic>
+                </Button>
+            </HBox>
+
+            <ScrollPane fitToWidth="true" styleClass="drawer-scroll" VBox.vgrow="ALWAYS">
+                <VBox styleClass="drawer-body">
+                    <VBox styleClass="campo">
+                        <Label text="Nombre *" styleClass="campo-label"/>
+                        <TextField fx:id="wcTxtNombre" promptText="Ej. Cambio de aceite y filtro"/>
+                        <Label styleClass="campo-error" visible="false" managed="false"/>
+                    </VBox>
+
+                    <VBox styleClass="campo">
+                        <Label text="Descripcion" styleClass="campo-label"/>
+                        <TextField fx:id="wcTxtDescripcion" promptText="Que incluye el servicio"/>
+                        <Label styleClass="campo-error" visible="false" managed="false"/>
+                    </VBox>
+
+                    <VBox styleClass="campo">
+                        <Label text="Precio de mano de obra (S/) *" styleClass="campo-label"/>
+                        <CustomTextField fx:id="wcTxtPrecio" promptText="0.00">
+                            <left><FontIcon iconLiteral="fth-dollar-sign"/></left>
+                        </CustomTextField>
+                        <Label styleClass="campo-error" visible="false" managed="false"/>
+                    </VBox>
+
+                    <HBox styleClass="campo-switch" spacing="10.0" alignment="CENTER_LEFT">
+                        <ToggleSwitch fx:id="wcSwActivo" selected="true"/>
+                        <Label text="Disponible para nuevas ordenes"/>
+                    </HBox>
+                </VBox>
+            </ScrollPane>
+
+            <HBox styleClass="drawer-footer">
+                <Button text="Cancelar" onAction="#wcOnCerrarFormulario" styleClass="button-outlined"/>
+                <Button text="Guardar" onAction="#wcOnGuardar" styleClass="accent" defaultButton="true">
+                    <graphic><FontIcon iconLiteral="fth-check"/></graphic>
+                </Button>
+            </HBox>
+        </VBox>
+    </fx:define>
+
+    <HBox styleClass="pagina-cabecera">
+        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+            <Label text="Servicios" styleClass="pagina-titulo"/>
+            <Label text="Catalogo de mano de obra y sus precios" styleClass="pagina-subtitulo"/>
+        </VBox>
+        <Button text="Nuevo servicio" onAction="#wcOnNuevo" styleClass="accent,boton-principal">
+            <graphic><FontIcon iconLiteral="fth-plus"/></graphic>
+        </Button>
+    </HBox>
+
+    <VBox styleClass="tarjeta" VBox.vgrow="ALWAYS">
+        <HBox styleClass="barra-herramientas">
+            <CustomTextField fx:id="wcTxtBuscar" promptText="Buscar por nombre o descripcion"
+                             styleClass="buscador" prefWidth="340.0">
+                <left><FontIcon iconLiteral="fth-search"/></left>
+            </CustomTextField>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button fx:id="wcBtnEditar" text="Editar" onAction="#wcOnEditar" styleClass="button-outlined">
+                <graphic><FontIcon iconLiteral="fth-edit-2"/></graphic>
+            </Button>
+            <Button fx:id="wcBtnEliminar" text="Eliminar" onAction="#wcOnEliminar"
+                    styleClass="button-outlined,danger">
+                <graphic><FontIcon iconLiteral="fth-trash-2"/></graphic>
+            </Button>
+        </HBox>
+
+        <TableView fx:id="wcTabla" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="wcColId"          text="ID"          prefWidth="70.0" maxWidth="90.0"/>
+                <TableColumn fx:id="wcColNombre"      text="SERVICIO"    prefWidth="280.0"/>
+                <TableColumn fx:id="wcColDescripcion" text="DESCRIPCION" prefWidth="300.0"/>
+                <TableColumn fx:id="wcColPrecio"      text="PRECIO"      prefWidth="120.0"/>
+                <TableColumn fx:id="wcColActivo"      text="ESTADO"      prefWidth="110.0"/>
+            </columns>
+        </TableView>
+
+        <WcPaginador fx:id="wcPaginador"/>
+    </VBox>
+</VBox>

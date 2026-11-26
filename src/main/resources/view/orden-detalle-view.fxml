@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import atlantafx.base.controls.CustomTextField?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:id="wcRaiz"
+      fx:controller="com.taller.mecanico.controller.WcOrdenDetalleController"
+      styleClass="drawer"
+      prefWidth="780.0" maxWidth="780.0" maxHeight="Infinity">
+
+    <fx:define>
+        <VBox fx:id="wcDialogoCobro" styleClass="dialogo" spacing="14.0" maxWidth="440.0" maxHeight="-Infinity">
+            <StackPane styleClass="dialogo-icono,exito"><FontIcon iconLiteral="fth-dollar-sign"/></StackPane>
+            <Label text="Cobrar y entregar" styleClass="dialogo-titulo"/>
+            <Label fx:id="wcLblCobroTotal" styleClass="dialogo-mensaje"/>
+            <VBox styleClass="campo">
+                <Label text="Metodo de pago *" styleClass="campo-label"/>
+                <ComboBox fx:id="wcCmbMetodoPago" maxWidth="Infinity"/>
+            </VBox>
+            <HBox styleClass="dialogo-acciones" spacing="10.0" alignment="CENTER_RIGHT">
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="Cancelar" onAction="#wcOnCancelarCobro" styleClass="button-outlined" cancelButton="true"/>
+                <Button text="Cobrar y entregar" onAction="#wcOnConfirmarCobro" styleClass="accent">
+                    <graphic><FontIcon iconLiteral="fth-check"/></graphic>
+                </Button>
+            </HBox>
+        </VBox>
+    </fx:define>
+
+    <HBox styleClass="drawer-header">
+        <StackPane styleClass="drawer-icono"><FontIcon iconLiteral="fth-clipboard"/></StackPane>
+        <VBox spacing="2.0" HBox.hgrow="ALWAYS">
+            <HBox spacing="10.0" alignment="CENTER_LEFT">
+                <Label fx:id="wcLblCodigo" styleClass="drawer-titulo"/>
+                <Label fx:id="wcLblEstado" styleClass="chip"/>
+            </HBox>
+            <Label fx:id="wcLblSubtitulo" styleClass="drawer-subtitulo"/>
+        </VBox>
+        <Button onAction="#wcOnCerrar" styleClass="flat,button-circle">
+            <graphic><FontIcon iconLiteral="fth-x"/></graphic>
+        </Button>
+    </HBox>
+
+    <ScrollPane fitToWidth="true" styleClass="drawer-scroll" VBox.vgrow="ALWAYS">
+        <VBox styleClass="drawer-body">
+            <Label text="DATOS DEL INGRESO" styleClass="seccion-form"/>
+            <GridPane styleClass="detalle-datos" hgap="14.0" vgap="8.0">
+                <columnConstraints>
+                    <ColumnConstraints minWidth="110.0"/>
+                    <ColumnConstraints hgrow="ALWAYS"/>
+                </columnConstraints>
+                <Label text="Cliente" styleClass="campo-label" GridPane.rowIndex="0"/>
+                <Label fx:id="wcLblCliente" styleClass="detalle-dato" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                <Label text="Vehiculo" styleClass="campo-label" GridPane.rowIndex="1"/>
+                <Label fx:id="wcLblVehiculo" styleClass="detalle-dato" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                <Label text="Kilometraje" styleClass="campo-label" GridPane.rowIndex="2"/>
+                <Label fx:id="wcLblKilometraje" styleClass="detalle-dato" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                <Label text="Problema" styleClass="campo-label" GridPane.rowIndex="3"/>
+                <Label fx:id="wcLblProblema" styleClass="detalle-dato" wrapText="true"
+                       GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                <Label text="Mecanico" styleClass="campo-label" GridPane.rowIndex="4"/>
+                <Label fx:id="wcLblMecanico" styleClass="detalle-dato" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+                <Label text="Pago" styleClass="campo-label" GridPane.rowIndex="5"/>
+                <Label fx:id="wcLblPago" styleClass="detalle-dato" wrapText="true" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+            </GridPane>
+
+            <HBox fx:id="wcBarraAsignacion" spacing="10.0" alignment="CENTER_LEFT">
+                <ComboBox fx:id="wcCmbMecanico" HBox.hgrow="ALWAYS" maxWidth="Infinity" promptText="Selecciona un mecanico"/>
+                <Button text="Asignar" onAction="#wcOnAsignarMecanico" styleClass="button-outlined">
+                    <graphic><FontIcon iconLiteral="fth-user-check"/></graphic>
+                </Button>
+            </HBox>
+
+            <Label text="DIAGNOSTICO" styleClass="seccion-form"/>
+            <HBox spacing="10.0" alignment="CENTER_LEFT">
+                <ComboBox fx:id="wcCmbDiagnostico" HBox.hgrow="ALWAYS" maxWidth="Infinity" promptText="Selecciona una falla encontrada"/>
+                <Button fx:id="wcBtnAgregarDiagnostico" text="Agregar" styleClass="accent">
+                    <graphic><FontIcon iconLiteral="fth-plus"/></graphic>
+                </Button>
+            </HBox>
+            <ListView fx:id="wcLstDiagnostico" prefHeight="130.0" maxWidth="Infinity"/>
+            <HBox alignment="CENTER_RIGHT">
+                <Button fx:id="wcBtnGuardarDiagnostico" text="Guardar diagnostico" onAction="#wcOnGuardarDiagnostico"
+                        styleClass="button-outlined">
+                    <graphic><FontIcon iconLiteral="fth-save"/></graphic>
+                </Button>
+            </HBox>
+
+            <Label text="SERVICIOS (MANO DE OBRA)" styleClass="seccion-form"/>
+            <HBox fx:id="wcBarraServicios" spacing="10.0" alignment="CENTER_LEFT">
+                <ComboBox fx:id="wcCmbServicio" HBox.hgrow="ALWAYS" maxWidth="Infinity" promptText="Selecciona un servicio"/>
+                <Button text="Agregar" onAction="#wcOnAgregarServicio" styleClass="accent">
+                    <graphic><FontIcon iconLiteral="fth-plus"/></graphic>
+                </Button>
+            </HBox>
+            <TableView fx:id="wcTablaServicios" prefHeight="170.0">
+                <columns>
+                    <TableColumn fx:id="wcColServicio"       text="SERVICIO" prefWidth="420.0"/>
+                    <TableColumn fx:id="wcColPrecioServicio" text="PRECIO"   prefWidth="120.0"/>
+                    <TableColumn fx:id="wcColQuitarServicio" text=""         prefWidth="60.0" maxWidth="60.0"/>
+                </columns>
+            </TableView>
+
+            <Label text="REPUESTOS UTILIZADOS" styleClass="seccion-form"/>
+            <HBox fx:id="wcBarraRepuestos" spacing="10.0" alignment="CENTER_LEFT">
+                <CustomTextField fx:id="wcTxtRepuesto" HBox.hgrow="ALWAYS" promptText="Busca el repuesto por nombre o codigo">
+                    <left><FontIcon iconLiteral="fth-package"/></left>
+                </CustomTextField>
+                <Spinner fx:id="wcSpnCantidad" prefWidth="100.0" editable="true"/>
+                <Button text="Agregar" onAction="#wcOnAgregarRepuesto" styleClass="accent">
+                    <graphic><FontIcon iconLiteral="fth-plus"/></graphic>
+                </Button>
+            </HBox>
+            <TableView fx:id="wcTablaRepuestos" prefHeight="190.0">
+                <columns>
+                    <TableColumn fx:id="wcColCodigoRepuesto"  text="CODIGO"   prefWidth="90.0"/>
+                    <TableColumn fx:id="wcColRepuesto"        text="REPUESTO" prefWidth="260.0"/>
+                    <TableColumn fx:id="wcColCantidad"        text="CANT."    prefWidth="70.0"/>
+                    <TableColumn fx:id="wcColPrecioRepuesto"  text="P. UNIT." prefWidth="100.0"/>
+                    <TableColumn fx:id="wcColImporteRepuesto" text="IMPORTE"  prefWidth="100.0"/>
+                    <TableColumn fx:id="wcColQuitarRepuesto"  text=""         prefWidth="60.0" maxWidth="60.0"/>
+                </columns>
+            </TableView>
+
+            <HBox alignment="CENTER_RIGHT">
+                <GridPane styleClass="detalle-totales" hgap="14.0" vgap="6.0" maxWidth="320.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="ALWAYS"/>
+                        <ColumnConstraints halignment="RIGHT"/>
+                    </columnConstraints>
+                    <Label text="Mano de obra" GridPane.rowIndex="0"/>
+                    <Label fx:id="wcLblTotalServicios" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                    <Label text="Repuestos" GridPane.rowIndex="1"/>
+                    <Label fx:id="wcLblTotalRepuestos" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                    <Label text="Op. gravada" GridPane.rowIndex="2"/>
+                    <Label fx:id="wcLblBase" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                    <Label text="IGV (18%)" GridPane.rowIndex="3"/>
+                    <Label fx:id="wcLblIgv" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                    <Label text="Total" styleClass="detalle-total" GridPane.rowIndex="4"/>
+                    <Label fx:id="wcLblTotal" styleClass="detalle-total" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+                </GridPane>
+            </HBox>
+        </VBox>
+    </ScrollPane>
+
+    <HBox styleClass="drawer-footer">
+        <Button text="Imprimir" onAction="#wcOnImprimir" styleClass="button-outlined">
+            <graphic><FontIcon iconLiteral="fth-printer"/></graphic>
+        </Button>
+        <Region HBox.hgrow="ALWAYS"/>
+        <HBox fx:id="wcAccionesEstado" spacing="10.0" alignment="CENTER_RIGHT"/>
+    </HBox>
+</VBox>

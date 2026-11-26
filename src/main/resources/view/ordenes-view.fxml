@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import atlantafx.base.controls.CustomTextField?>
+<?import com.taller.mecanico.ui.WcPaginador?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.taller.mecanico.controller.WcOrdenesController"
+      styleClass="pagina">
+
+    <fx:define>
+        <VBox fx:id="wcPanelNuevaOrden" styleClass="drawer"
+              prefWidth="460.0" maxWidth="460.0" maxHeight="Infinity">
+            <HBox styleClass="drawer-header">
+                <StackPane styleClass="drawer-icono"><FontIcon iconLiteral="fth-clipboard"/></StackPane>
+                <VBox spacing="2.0" HBox.hgrow="ALWAYS">
+                    <Label text="Nueva orden de servicio" styleClass="drawer-titulo"/>
+                    <Label text="Registra el ingreso del vehiculo al taller" styleClass="drawer-subtitulo"/>
+                </VBox>
+                <Button onAction="#wcOnCerrarFormulario" styleClass="flat,button-circle">
+                    <graphic><FontIcon iconLiteral="fth-x"/></graphic>
+                </Button>
+            </HBox>
+
+            <ScrollPane fitToWidth="true" styleClass="drawer-scroll" VBox.vgrow="ALWAYS">
+                <VBox styleClass="drawer-body">
+                    <Label text="VEHICULO" styleClass="seccion-form"/>
+
+                    <VBox styleClass="campo">
+                        <Label text="Vehiculo *" styleClass="campo-label"/>
+                        <CustomTextField fx:id="wcTxtVehiculo" promptText="Busca por placa o propietario">
+                            <left><FontIcon iconLiteral="fth-truck"/></left>
+                        </CustomTextField>
+                        <Label styleClass="campo-error" visible="false" managed="false"/>
+                    </VBox>
+                    <Label fx:id="wcLblPropietario" styleClass="detalle-dato" wrapText="true"
+                           visible="false" managed="false"/>
+
+                    <VBox styleClass="campo">
+                        <Label text="Kilometraje actual *" styleClass="campo-label"/>
+                        <TextField fx:id="wcTxtKilometraje" promptText="Ej. 45200"/>
+                        <Label styleClass="campo-error" visible="false" managed="false"/>
+                    </VBox>
+
+                    <Label text="TRABAJO" styleClass="seccion-form"/>
+
+                    <VBox styleClass="campo">
+                        <Label text="Problemas que reporta el cliente *" styleClass="campo-label"/>
+                        <HBox spacing="8.0" alignment="CENTER_LEFT">
+                            <ComboBox fx:id="wcCmbProblema" HBox.hgrow="ALWAYS" maxWidth="Infinity" promptText="Selecciona un problema"/>
+                            <Button fx:id="wcBtnAgregarProblema" text="Agregar" styleClass="accent">
+                                <graphic><FontIcon iconLiteral="fth-plus"/></graphic>
+                            </Button>
+                        </HBox>
+                        <ListView fx:id="wcLstProblemas" prefHeight="140.0" maxWidth="Infinity"/>
+                        <Label styleClass="campo-error" visible="false" managed="false"/>
+                    </VBox>
+
+                    <VBox styleClass="campo">
+                        <Label text="Mecanico asignado" styleClass="campo-label"/>
+                        <ComboBox fx:id="wcCmbMecanico" maxWidth="Infinity" promptText="Sin asignar"/>
+                        <Label styleClass="campo-error" visible="false" managed="false"/>
+                    </VBox>
+                </VBox>
+            </ScrollPane>
+
+            <HBox styleClass="drawer-footer">
+                <Button text="Cancelar" onAction="#wcOnCerrarFormulario" styleClass="button-outlined"/>
+                <Button text="Registrar orden" onAction="#wcOnRegistrar" styleClass="accent" defaultButton="true">
+                    <graphic><FontIcon iconLiteral="fth-check"/></graphic>
+                </Button>
+            </HBox>
+        </VBox>
+    </fx:define>
+
+    <HBox styleClass="pagina-cabecera">
+        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+            <Label fx:id="wcLblTitulo" text="Ordenes de servicio" styleClass="pagina-titulo"/>
+            <Label fx:id="wcLblSubtitulo" text="Vehiculos que ingresan al taller y su avance"
+                   styleClass="pagina-subtitulo"/>
+        </VBox>
+        <Button fx:id="wcBtnNuevaOrden" text="Nueva orden" onAction="#wcOnNuevaOrden" styleClass="accent,boton-principal">
+            <graphic><FontIcon iconLiteral="fth-plus"/></graphic>
+        </Button>
+    </HBox>
+
+    <VBox styleClass="tarjeta" VBox.vgrow="ALWAYS">
+        <HBox styleClass="barra-herramientas">
+            <CustomTextField fx:id="wcTxtBuscar" promptText="Buscar por codigo, placa o cliente"
+                             styleClass="buscador" prefWidth="320.0">
+                <left><FontIcon iconLiteral="fth-search"/></left>
+            </CustomTextField>
+            <ComboBox fx:id="wcCmbEstado" prefWidth="200.0" promptText="Todos los estados"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button fx:id="wcBtnImprimir" text="Imprimir" onAction="#wcOnImprimir" styleClass="button-outlined">
+                <graphic><FontIcon iconLiteral="fth-printer"/></graphic>
+            </Button>
+            <Button fx:id="wcBtnAbrir" text="Abrir orden" onAction="#wcOnAbrir" styleClass="button-outlined">
+                <graphic><FontIcon iconLiteral="fth-external-link"/></graphic>
+            </Button>
+        </HBox>
+
+        <TableView fx:id="wcTabla" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="wcColCodigo"   text="ORDEN"     prefWidth="110.0"/>
+                <TableColumn fx:id="wcColIngreso"  text="INGRESO"   prefWidth="130.0"/>
+                <TableColumn fx:id="wcColVehiculo" text="VEHICULO"  prefWidth="220.0"/>
+                <TableColumn fx:id="wcColCliente"  text="CLIENTE"   prefWidth="200.0"/>
+                <TableColumn fx:id="wcColMecanico" text="MECANICO"  prefWidth="170.0"/>
+                <TableColumn fx:id="wcColEstado"   text="ESTADO"    prefWidth="150.0"/>
+                <TableColumn fx:id="wcColTotal"    text="TOTAL"     prefWidth="110.0"/>
+            </columns>
+        </TableView>
+
+        <WcPaginador fx:id="wcPaginador"/>
+    </VBox>
+</VBox>

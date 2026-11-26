@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.taller.mecanico.controller.WcDashboardController"
+            fitToWidth="true" styleClass="pagina-scroll">
+
+    <VBox styleClass="pagina">
+
+        <HBox styleClass="pagina-cabecera">
+            <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                <Label text="Dashboard" styleClass="pagina-titulo"/>
+                <Label fx:id="wcLblActualizado" text="Resumen general" styleClass="pagina-subtitulo"/>
+            </VBox>
+            <ComboBox fx:id="wcCmbPeriodo" prefWidth="170.0" styleClass="selector-periodo"/>
+            <Button text="Exportar Excel" onAction="#wcOnExportarExcel" styleClass="button-outlined">
+                <graphic><FontIcon iconLiteral="fth-download"/></graphic>
+            </Button>
+            <Button text="Actualizar" onAction="#wcOnActualizar" styleClass="button-outlined">
+                <graphic><FontIcon fx:id="wcIconoActualizar" iconLiteral="fth-refresh-cw"/></graphic>
+            </Button>
+        </HBox>
+
+        <Label text="TALLER" styleClass="dashboard-seccion"/>
+        <GridPane hgap="16.0">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="25.0"/>
+                <ColumnConstraints percentWidth="25.0"/>
+                <ColumnConstraints percentWidth="25.0"/>
+                <ColumnConstraints percentWidth="25.0"/>
+            </columnConstraints>
+
+            <VBox styleClass="tarjeta,kpi,kpi-destacado" GridPane.columnIndex="0">
+                <HBox styleClass="kpi-cabecera">
+                    <Label text="Vehiculos en taller" styleClass="kpi-titulo" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <StackPane styleClass="kpi-icono"><FontIcon iconLiteral="fth-truck"/></StackPane>
+                </HBox>
+                <Label fx:id="wcKpiEnTaller" text="0" styleClass="kpi-valor"/>
+                <Label text="Ordenes abiertas" styleClass="kpi-detalle"/>
+            </VBox>
+
+            <VBox styleClass="tarjeta,kpi" GridPane.columnIndex="1">
+                <HBox styleClass="kpi-cabecera">
+                    <Label text="Listos para entrega" styleClass="kpi-titulo" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <StackPane styleClass="kpi-icono"><FontIcon iconLiteral="fth-check-circle"/></StackPane>
+                </HBox>
+                <Label fx:id="wcKpiListos" text="0" styleClass="kpi-valor"/>
+                <Label text="Esperando al cliente" styleClass="kpi-detalle"/>
+            </VBox>
+
+            <VBox styleClass="tarjeta,kpi" GridPane.columnIndex="2">
+                <HBox styleClass="kpi-cabecera">
+                    <Label text="Ordenes del mes" styleClass="kpi-titulo" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <StackPane styleClass="kpi-icono"><FontIcon iconLiteral="fth-clipboard"/></StackPane>
+                </HBox>
+                <Label fx:id="wcKpiOrdenesMes" text="0" styleClass="kpi-valor"/>
+                <Label text="Ingresadas este mes" styleClass="kpi-detalle"/>
+            </VBox>
+
+            <VBox styleClass="tarjeta,kpi" GridPane.columnIndex="3">
+                <HBox styleClass="kpi-cabecera">
+                    <Label text="Facturado en el taller" styleClass="kpi-titulo" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <StackPane styleClass="kpi-icono"><FontIcon iconLiteral="fth-dollar-sign"/></StackPane>
+                </HBox>
+                <Label fx:id="wcKpiFacturadoTaller" text="S/ 0.00" styleClass="kpi-valor"/>
+                <Label text="Ordenes entregadas este mes" styleClass="kpi-detalle"/>
+            </VBox>
+        </GridPane>
+
+        <Label text="VENTAS DE MOSTRADOR" styleClass="dashboard-seccion"/>
+        <GridPane hgap="16.0">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="25.0"/>
+                <ColumnConstraints percentWidth="25.0"/>
+                <ColumnConstraints percentWidth="25.0"/>
+                <ColumnConstraints percentWidth="25.0"/>
+            </columnConstraints>
+
+            <VBox styleClass="tarjeta,kpi,kpi-destacado" GridPane.columnIndex="0">
+                <HBox styleClass="kpi-cabecera">
+                    <Label text="Total vendido" styleClass="kpi-titulo" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <StackPane styleClass="kpi-icono"><FontIcon iconLiteral="fth-trending-up"/></StackPane>
+                </HBox>
+                <Label fx:id="wcKpiVentas" text="S/ 0.00" styleClass="kpi-valor"/>
+                <HBox spacing="8.0" alignment="CENTER_LEFT">
+                    <Label fx:id="wcKpiVentasVariacion" styleClass="variacion"/>
+                    <Label fx:id="wcKpiVentasDetalle" text=" " styleClass="kpi-detalle"/>
+                </HBox>
+            </VBox>
+
+            <VBox styleClass="tarjeta,kpi" GridPane.columnIndex="1">
+                <HBox styleClass="kpi-cabecera">
+                    <Label text="Comprobantes" styleClass="kpi-titulo" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <StackPane styleClass="kpi-icono"><FontIcon iconLiteral="fth-file-text"/></StackPane>
+                </HBox>
+                <Label fx:id="wcKpiComprobantes" text="0" styleClass="kpi-valor"/>
+                <Label fx:id="wcKpiComprobantesDetalle" text=" " styleClass="kpi-detalle"/>
+            </VBox>
+
+            <VBox styleClass="tarjeta,kpi" GridPane.columnIndex="2">
+                <HBox styleClass="kpi-cabecera">
+                    <Label text="Ticket promedio" styleClass="kpi-titulo" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <StackPane styleClass="kpi-icono"><FontIcon iconLiteral="fth-shopping-bag"/></StackPane>
+                </HBox>
+                <Label fx:id="wcKpiTicket" text="S/ 0.00" styleClass="kpi-valor"/>
+                <Label fx:id="wcKpiTicketDetalle" text=" " styleClass="kpi-detalle"/>
+            </VBox>
+
+            <VBox styleClass="tarjeta,kpi" GridPane.columnIndex="3">
+                <HBox styleClass="kpi-cabecera">
+                    <Label text="IGV del periodo" styleClass="kpi-titulo" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <StackPane styleClass="kpi-icono"><FontIcon iconLiteral="fth-percent"/></StackPane>
+                </HBox>
+                <Label fx:id="wcKpiIgv" text="S/ 0.00" styleClass="kpi-valor"/>
+                <Label fx:id="wcKpiIgvDetalle" text=" " styleClass="kpi-detalle"/>
+            </VBox>
+        </GridPane>
+
+        <GridPane hgap="16.0" vgap="16.0">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="62.0"/>
+                <ColumnConstraints percentWidth="38.0"/>
+            </columnConstraints>
+
+            <VBox styleClass="tarjeta,grafico" GridPane.rowIndex="0" GridPane.columnIndex="0">
+                <Label text="Evolucion de ventas" styleClass="grafico-titulo"/>
+                <Label fx:id="wcLblSerieSubtitulo" text="Total vendido por dia (S/)" styleClass="grafico-subtitulo"/>
+                <AreaChart fx:id="wcGraficoVentas" legendVisible="false" animated="false"
+                           createSymbols="true" prefHeight="270.0" VBox.vgrow="ALWAYS" styleClass="grafico-area">
+                    <xAxis><NumberAxis fx:id="wcEjeFechas" side="BOTTOM" minorTickVisible="false" forceZeroInRange="false"/></xAxis>
+                    <yAxis><NumberAxis fx:id="wcEjeVentas" side="LEFT" minorTickVisible="false"/></yAxis>
+                </AreaChart>
+            </VBox>
+
+            <VBox styleClass="tarjeta,grafico" GridPane.rowIndex="0" GridPane.columnIndex="1">
+                <Label text="Repuestos mas vendidos" styleClass="grafico-titulo"/>
+                <Label text="Top 5 por importe en el periodo" styleClass="grafico-subtitulo"/>
+                <VBox fx:id="wcListaTopVendidos" styleClass="ranking" VBox.vgrow="ALWAYS"/>
+            </VBox>
+
+            <VBox styleClass="tarjeta,grafico" GridPane.rowIndex="1" GridPane.columnIndex="0">
+                <HBox alignment="CENTER_LEFT">
+                    <VBox HBox.hgrow="ALWAYS">
+                        <Label text="Ultimas ventas" styleClass="grafico-titulo"/>
+                        <Label text="Imprime el comprobante en PDF con un clic" styleClass="grafico-subtitulo"/>
+                    </VBox>
+                    <Hyperlink text="Ver todas" onAction="#wcOnVerVentas"/>
+                </HBox>
+                <VBox fx:id="wcListaUltimas" styleClass="lista-ventas"/>
+            </VBox>
+
+            <VBox styleClass="tarjeta,grafico" GridPane.rowIndex="1" GridPane.columnIndex="1">
+                <Label text="Mejores clientes" styleClass="grafico-titulo"/>
+                <Label text="Top 5 por importe comprado en el periodo" styleClass="grafico-subtitulo"/>
+                <VBox fx:id="wcListaClientes" styleClass="ranking" VBox.vgrow="ALWAYS"/>
+            </VBox>
+        </GridPane>
+
+        <Label text="CATALOGO Y CLIENTES" styleClass="dashboard-seccion"/>
+
+        <GridPane fx:id="gridKpi" hgap="16.0">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="25.0"/>
+                <ColumnConstraints percentWidth="25.0"/>
+                <ColumnConstraints percentWidth="25.0"/>
+                <ColumnConstraints percentWidth="25.0"/>
+            </columnConstraints>
+
+            <VBox styleClass="tarjeta,kpi" GridPane.columnIndex="0">
+                <HBox styleClass="kpi-cabecera">
+                    <Label text="Clientes" styleClass="kpi-titulo" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <StackPane styleClass="kpi-icono"><FontIcon iconLiteral="fth-users"/></StackPane>
+                </HBox>
+                <Label fx:id="wcKpiClientes" text="0" styleClass="kpi-valor"/>
+                <Label fx:id="wcKpiClientesDetalle" text=" " styleClass="kpi-detalle"/>
+            </VBox>
+
+            <VBox styleClass="tarjeta,kpi" GridPane.columnIndex="1">
+                <HBox styleClass="kpi-cabecera">
+                    <Label text="Categorias" styleClass="kpi-titulo" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <StackPane styleClass="kpi-icono"><FontIcon iconLiteral="fth-tag"/></StackPane>
+                </HBox>
+                <Label fx:id="wcKpiCategorias" text="0" styleClass="kpi-valor"/>
+                <Label fx:id="wcKpiCategoriasDetalle" text=" " styleClass="kpi-detalle"/>
+            </VBox>
+
+            <VBox styleClass="tarjeta,kpi" GridPane.columnIndex="2">
+                <HBox styleClass="kpi-cabecera">
+                    <Label text="Repuestos" styleClass="kpi-titulo" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <StackPane styleClass="kpi-icono"><FontIcon iconLiteral="fth-package"/></StackPane>
+                </HBox>
+                <Label fx:id="wcKpiRepuestos" text="0" styleClass="kpi-valor"/>
+                <Label fx:id="wcKpiRepuestosDetalle" text=" " styleClass="kpi-detalle"/>
+            </VBox>
+
+            <VBox styleClass="tarjeta,kpi" GridPane.columnIndex="3">
+                <HBox styleClass="kpi-cabecera">
+                    <Label text="Valor del catalogo" styleClass="kpi-titulo" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <StackPane styleClass="kpi-icono"><FontIcon iconLiteral="fth-dollar-sign"/></StackPane>
+                </HBox>
+                <Label fx:id="wcKpiValor" text="S/ 0.00" styleClass="kpi-valor"/>
+                <Label fx:id="wcKpiValorDetalle" text=" " styleClass="kpi-detalle"/>
+            </VBox>
+        </GridPane>
+
+        <GridPane hgap="16.0" vgap="16.0">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50.0"/>
+                <ColumnConstraints percentWidth="50.0"/>
+            </columnConstraints>
+
+            <VBox styleClass="tarjeta,grafico" GridPane.rowIndex="0" GridPane.columnIndex="0">
+                <Label text="Repuestos por categoria" styleClass="grafico-titulo"/>
+                <Label text="Participacion de cada categoria en el catalogo" styleClass="grafico-subtitulo"/>
+                <HBox spacing="20.0" alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
+                    <StackPane fx:id="wcContenedorDona" prefWidth="240.0" prefHeight="240.0"
+                               minWidth="200.0" minHeight="220.0">
+                        <PieChart fx:id="wcGraficoCategorias" legendVisible="false" labelsVisible="false"
+                                  startAngle="90.0" clockwise="true" styleClass="dona"/>
+                        <Circle fx:id="wcHuecoDona" styleClass="dona-hueco" mouseTransparent="true"/>
+                        <VBox alignment="CENTER" mouseTransparent="true">
+                            <Label fx:id="wcLblTotalDona" text="0" styleClass="dona-total"/>
+                            <Label text="repuestos" styleClass="dona-etiqueta"/>
+                        </VBox>
+                    </StackPane>
+                    <VBox fx:id="wcLeyendaDona" styleClass="leyenda" HBox.hgrow="ALWAYS"/>
+                </HBox>
+            </VBox>
+
+            <VBox styleClass="tarjeta,grafico" GridPane.rowIndex="0" GridPane.columnIndex="1">
+                <Label text="Precio promedio por categoria" styleClass="grafico-titulo"/>
+                <Label text="Importe medio de los repuestos (S/)" styleClass="grafico-subtitulo"/>
+                <BarChart fx:id="wcGraficoPromedio" legendVisible="false" animated="false"
+                          barGap="0.0" categoryGap="14.0" prefHeight="260.0" VBox.vgrow="ALWAYS"
+                          styleClass="grafico-horizontal">
+                    <xAxis><NumberAxis fx:id="wcEjePromedio" side="BOTTOM" minorTickVisible="false"/></xAxis>
+                    <yAxis><CategoryAxis side="LEFT"/></yAxis>
+                </BarChart>
+            </VBox>
+
+            <VBox styleClass="tarjeta,grafico" GridPane.rowIndex="1" GridPane.columnIndex="0">
+                <Label text="Distribucion de precios" styleClass="grafico-titulo"/>
+                <Label text="Cantidad de repuestos por rango de precio (S/)" styleClass="grafico-subtitulo"/>
+                <BarChart fx:id="wcGraficoRangos" legendVisible="false" animated="false"
+                          barGap="0.0" categoryGap="18.0" prefHeight="260.0" VBox.vgrow="ALWAYS">
+                    <xAxis><CategoryAxis side="BOTTOM"/></xAxis>
+                    <yAxis><NumberAxis fx:id="wcEjeRangos" side="LEFT" minorTickVisible="false"/></yAxis>
+                </BarChart>
+            </VBox>
+
+            <VBox styleClass="tarjeta,grafico" GridPane.rowIndex="1" GridPane.columnIndex="1">
+                <Label text="Repuestos de mayor precio" styleClass="grafico-titulo"/>
+                <Label text="Top 5 del catalogo" styleClass="grafico-subtitulo"/>
+                <VBox fx:id="wcListaTop" styleClass="ranking" VBox.vgrow="ALWAYS"/>
+            </VBox>
+
+            <VBox styleClass="tarjeta,grafico" GridPane.rowIndex="2" GridPane.columnIndex="0"
+                  GridPane.columnSpan="2">
+                <Label text="Datos de contacto de clientes" styleClass="grafico-titulo"/>
+                <Label text="Porcentaje de registros con informacion de contacto" styleClass="grafico-subtitulo"/>
+                <HBox fx:id="wcMedidoresContacto" styleClass="medidores"/>
+            </VBox>
+        </GridPane>
+    </VBox>
+</ScrollPane>

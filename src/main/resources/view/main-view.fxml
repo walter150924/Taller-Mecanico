@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import atlantafx.base.controls.ModalPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<StackPane xmlns="http://javafx.com/javafx/17"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:id="wcRaiz"
+           fx:controller="com.taller.mecanico.controller.WcMainController"
+           styleClass="app"
+           prefWidth="1280.0" prefHeight="800.0">
+
+    <fx:define>
+        <ToggleGroup fx:id="wcMenu"/>
+    </fx:define>
+
+    <BorderPane>
+        <left>
+            <VBox fx:id="wcSidebar" styleClass="sidebar" prefWidth="248.0" minWidth="248.0">
+
+                <HBox styleClass="marca" spacing="12.0">
+                    <VBox fx:id="wcMarcaTextos" spacing="1.0">
+                        <Label text="Taller Mecanico" styleClass="marca-titulo"/>
+                        <Label text="Sistema de gestion" styleClass="marca-subtitulo"/>
+                    </VBox>
+                </HBox>
+
+                <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="nav-scroll" VBox.vgrow="ALWAYS">
+                    <StackPane alignment="TOP_LEFT">
+                        <Region fx:id="wcIndicador" styleClass="nav-indicador"
+                                prefHeight="42.0" maxHeight="-Infinity"/>
+                        <VBox spacing="3.0">
+                            <Label fx:id="wcSecGeneral" text="GENERAL" styleClass="nav-seccion"/>
+                            <ToggleButton fx:id="wcNavDashboard" text="Dashboard" toggleGroup="$wcMenu"
+                                          styleClass="nav-item" maxWidth="Infinity">
+                                <graphic><FontIcon iconLiteral="fth-grid"/></graphic>
+                            </ToggleButton>
+                            <Label fx:id="wcSecTaller" text="TALLER" styleClass="nav-seccion"/>
+                            <ToggleButton fx:id="wcNavOrdenes" text="Ordenes de servicio" toggleGroup="$wcMenu"
+                                          styleClass="nav-item" maxWidth="Infinity">
+                                <graphic><FontIcon iconLiteral="fth-clipboard"/></graphic>
+                            </ToggleButton>
+                            <ToggleButton fx:id="wcNavVehiculos" text="Vehiculos" toggleGroup="$wcMenu"
+                                          styleClass="nav-item" maxWidth="Infinity">
+                                <graphic><FontIcon iconLiteral="fth-truck"/></graphic>
+                            </ToggleButton>
+                            <ToggleButton fx:id="wcNavClientes" text="Clientes" toggleGroup="$wcMenu"
+                                          styleClass="nav-item" maxWidth="Infinity">
+                                <graphic><FontIcon iconLiteral="fth-users"/></graphic>
+                            </ToggleButton>
+                            <Label fx:id="wcSecVentas" text="VENTAS" styleClass="nav-seccion"/>
+                            <ToggleButton fx:id="wcNavPuntoVenta" text="Venta de mostrador" toggleGroup="$wcMenu"
+                                          styleClass="nav-item" maxWidth="Infinity">
+                                <graphic><FontIcon iconLiteral="fth-shopping-cart"/></graphic>
+                            </ToggleButton>
+                            <ToggleButton fx:id="wcNavVentas" text="Ventas" toggleGroup="$wcMenu"
+                                          styleClass="nav-item" maxWidth="Infinity">
+                                <graphic><FontIcon iconLiteral="fth-file-text"/></graphic>
+                            </ToggleButton>
+                            <Label fx:id="wcSecCompras" text="COMPRAS E INVENTARIO" styleClass="nav-seccion"/>
+                            <ToggleButton fx:id="wcNavCompra" text="Nueva compra" toggleGroup="$wcMenu"
+                                          styleClass="nav-item" maxWidth="Infinity">
+                                <graphic><FontIcon iconLiteral="fth-shopping-bag"/></graphic>
+                            </ToggleButton>
+                            <ToggleButton fx:id="wcNavCompras" text="Compras" toggleGroup="$wcMenu"
+                                          styleClass="nav-item" maxWidth="Infinity">
+                                <graphic><FontIcon iconLiteral="fth-archive"/></graphic>
+                            </ToggleButton>
+                            <ToggleButton fx:id="wcNavProveedores" text="Proveedores" toggleGroup="$wcMenu"
+                                          styleClass="nav-item" maxWidth="Infinity">
+                                <graphic><FontIcon iconLiteral="fth-briefcase"/></graphic>
+                            </ToggleButton>
+                            <ToggleButton fx:id="wcNavInventario" text="Inventario" toggleGroup="$wcMenu"
+                                          styleClass="nav-item" maxWidth="Infinity">
+                                <graphic><FontIcon iconLiteral="fth-box"/></graphic>
+                            </ToggleButton>
+                            <Label fx:id="wcSecCatalogo" text="CATALOGO" styleClass="nav-seccion"/>
+                            <ToggleButton fx:id="wcNavServicios" text="Servicios" toggleGroup="$wcMenu"
+                                          styleClass="nav-item" maxWidth="Infinity">
+                                <graphic><FontIcon iconLiteral="fth-tool"/></graphic>
+                            </ToggleButton>
+                            <ToggleButton fx:id="wcNavRepuestos" text="Repuestos" toggleGroup="$wcMenu"
+                                          styleClass="nav-item" maxWidth="Infinity">
+                                <graphic><FontIcon iconLiteral="fth-package"/></graphic>
+                            </ToggleButton>
+                            <ToggleButton fx:id="wcNavCategorias" text="Categorias" toggleGroup="$wcMenu"
+                                          styleClass="nav-item" maxWidth="Infinity">
+                                <graphic><FontIcon iconLiteral="fth-tag"/></graphic>
+                            </ToggleButton>
+                            <Label fx:id="wcSecAdministracion" text="ADMINISTRACION" styleClass="nav-seccion"/>
+                            <ToggleButton fx:id="wcNavUsuarios" text="Usuarios" toggleGroup="$wcMenu"
+                                          styleClass="nav-item" maxWidth="Infinity">
+                                <graphic><FontIcon iconLiteral="fth-shield"/></graphic>
+                            </ToggleButton>
+                        </VBox>
+                    </StackPane>
+                </ScrollPane>
+
+                <Separator styleClass="nav-separador"/>
+                <HBox styleClass="usuario-sesion" spacing="10.0">
+                    <StackPane styleClass="avatar">
+                        <Label fx:id="wcLblIniciales"/>
+                    </StackPane>
+                    <VBox fx:id="wcUsuarioTextos" spacing="1.0" HBox.hgrow="ALWAYS">
+                        <Label fx:id="wcLblUsuario" styleClass="usuario-nombre"/>
+                        <Label fx:id="wcLblRol" styleClass="usuario-rol"/>
+                    </VBox>
+                </HBox>
+                <Button fx:id="wcBtnCerrarSesion" text="Cerrar sesion" onAction="#wcOnCerrarSesion"
+                        styleClass="nav-item" maxWidth="Infinity">
+                    <graphic><FontIcon iconLiteral="fth-log-out"/></graphic>
+                </Button>
+                <Button fx:id="wcBtnTema" text="Modo oscuro" onAction="#wcOnCambiarTema"
+                        styleClass="nav-item" maxWidth="Infinity">
+                    <graphic><FontIcon iconLiteral="fth-moon"/></graphic>
+                </Button>
+                <Button fx:id="wcBtnContraer" text="Contraer menu" onAction="#wcOnContraerMenu"
+                        styleClass="nav-item" maxWidth="Infinity">
+                    <graphic><FontIcon iconLiteral="fth-chevrons-left"/></graphic>
+                </Button>
+            </VBox>
+        </left>
+
+        <center>
+            <StackPane fx:id="wcContenido" styleClass="contenido"/>
+        </center>
+    </BorderPane>
+
+    <ModalPane fx:id="wcModalPanel"/>
+    <ModalPane fx:id="wcModalDialogo"/>
+    <VBox fx:id="wcZonaNotificaciones" styleClass="zona-notificaciones" spacing="10.0"
+          pickOnBounds="false" alignment="BOTTOM_RIGHT" viewOrder="-100"
+          StackPane.alignment="BOTTOM_RIGHT" maxWidth="-Infinity" maxHeight="-Infinity"/>
+</StackPane>

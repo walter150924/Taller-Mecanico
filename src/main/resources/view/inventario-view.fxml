@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import atlantafx.base.controls.CustomTextField?>
+<?import com.taller.mecanico.ui.WcPaginador?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.taller.mecanico.controller.WcInventarioController"
+      styleClass="pagina">
+
+    <fx:define>
+        <VBox fx:id="wcPanelKardex" styleClass="drawer"
+              prefWidth="740.0" maxWidth="740.0" maxHeight="Infinity">
+            <HBox styleClass="drawer-header">
+                <StackPane styleClass="drawer-icono"><FontIcon iconLiteral="fth-list"/></StackPane>
+                <VBox spacing="2.0" HBox.hgrow="ALWAYS">
+                    <Label fx:id="wcLblKarRepuesto" styleClass="drawer-titulo" wrapText="true"/>
+                    <Label fx:id="wcLblKarSubtitulo" styleClass="drawer-subtitulo"/>
+                </VBox>
+                <Button onAction="#wcOnCerrarKardex" styleClass="flat,button-circle">
+                    <graphic><FontIcon iconLiteral="fth-x"/></graphic>
+                </Button>
+            </HBox>
+
+            <VBox styleClass="drawer-body" VBox.vgrow="ALWAYS">
+                <HBox styleClass="resumen-filtro">
+                    <VBox styleClass="resumen-filtro-item" HBox.hgrow="ALWAYS">
+                        <Label text="Stock actual" styleClass="kpi-titulo"/>
+                        <Label fx:id="wcLblKarStock" styleClass="resumen-filtro-valor"/>
+                    </VBox>
+                    <VBox styleClass="resumen-filtro-item" HBox.hgrow="ALWAYS">
+                        <Label text="Costo promedio" styleClass="kpi-titulo"/>
+                        <Label fx:id="wcLblKarCosto" styleClass="resumen-filtro-valor"/>
+                    </VBox>
+                    <VBox styleClass="resumen-filtro-item,destacado" HBox.hgrow="ALWAYS">
+                        <Label text="Valor al costo" styleClass="kpi-titulo"/>
+                        <Label fx:id="wcLblKarValor" styleClass="resumen-filtro-valor"/>
+                    </VBox>
+                </HBox>
+                <HBox spacing="18.0">
+                    <Label fx:id="wcLblKarEntradas" styleClass="kardex-total,entrada">
+                        <graphic><FontIcon iconLiteral="fth-arrow-down-left"/></graphic>
+                    </Label>
+                    <Label fx:id="wcLblKarSalidas" styleClass="kardex-total,salida">
+                        <graphic><FontIcon iconLiteral="fth-arrow-up-right"/></graphic>
+                    </Label>
+                </HBox>
+                <TableView fx:id="wcTablaKardex" VBox.vgrow="ALWAYS" styleClass="tabla-compacta">
+                    <columns>
+                        <TableColumn fx:id="wcColKarFecha"      text="FECHA"      prefWidth="140.0" minWidth="140.0" sortable="false"/>
+                        <TableColumn fx:id="wcColKarTipo"       text="MOVIMIENTO" prefWidth="150.0" minWidth="150.0" sortable="false"/>
+                        <TableColumn fx:id="wcColKarDocumento"  text="DOCUMENTO"  prefWidth="160.0" sortable="false"/>
+                        <TableColumn fx:id="wcColKarEntrada"    text="ENTRADA"    prefWidth="74.0"  minWidth="74.0" sortable="false"/>
+                        <TableColumn fx:id="wcColKarSalida"     text="SALIDA"     prefWidth="74.0"  minWidth="74.0" sortable="false"/>
+                        <TableColumn fx:id="wcColKarSaldo"      text="SALDO"      prefWidth="74.0"  minWidth="74.0" sortable="false"/>
+                    </columns>
+                </TableView>
+            </VBox>
+
+            <HBox styleClass="drawer-footer">
+                <Button text="Cerrar" onAction="#wcOnCerrarKardex" styleClass="button-outlined"/>
+                <Button text="Reponer stock" onAction="#wcOnReponerDesdeKardex" styleClass="accent">
+                    <graphic><FontIcon iconLiteral="fth-shopping-bag"/></graphic>
+                </Button>
+            </HBox>
+        </VBox>
+    </fx:define>
+
+    <HBox styleClass="pagina-cabecera">
+        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+            <Label text="Inventario" styleClass="pagina-titulo"/>
+            <Label text="Stock actualizado con cada compra (suma) y cada venta (resta), valorizado al costo promedio"
+                   styleClass="pagina-subtitulo"/>
+        </VBox>
+        <Button text="Exportar Excel" onAction="#wcOnExportarExcel" styleClass="button-outlined,boton-principal">
+            <graphic><FontIcon iconLiteral="fth-file-text"/></graphic>
+        </Button>
+        <Button text="Nueva compra" onAction="#wcOnNuevaCompra" styleClass="accent,boton-principal">
+            <graphic><FontIcon iconLiteral="fth-plus"/></graphic>
+        </Button>
+    </HBox>
+
+    <HBox styleClass="resumen-filtro">
+        <VBox styleClass="resumen-filtro-item" HBox.hgrow="ALWAYS">
+            <Label text="Unidades en stock" styleClass="kpi-titulo"/>
+            <Label fx:id="wcLblResUnidades" text="0" styleClass="resumen-filtro-valor"/>
+            <Label fx:id="wcLblResRepuestos" styleClass="kpi-detalle"/>
+        </VBox>
+        <VBox styleClass="resumen-filtro-item,destacado" HBox.hgrow="ALWAYS">
+            <Label text="Valor al costo" styleClass="kpi-titulo"/>
+            <Label fx:id="wcLblResCosto" styleClass="resumen-filtro-valor"/>
+            <Label text="Costo promedio sin IGV" styleClass="kpi-detalle"/>
+        </VBox>
+        <VBox styleClass="resumen-filtro-item" HBox.hgrow="ALWAYS">
+            <Label text="Valor a precio de venta" styleClass="kpi-titulo"/>
+            <Label fx:id="wcLblResVenta" styleClass="resumen-filtro-valor"/>
+            <Label fx:id="wcLblResMargen" styleClass="kpi-detalle"/>
+        </VBox>
+        <VBox fx:id="wcKpiBajo" styleClass="resumen-filtro-item,alerta" HBox.hgrow="ALWAYS">
+            <Label text="Stock bajo" styleClass="kpi-titulo"/>
+            <Label fx:id="wcLblResBajo" styleClass="resumen-filtro-valor"/>
+            <Label text="En o bajo el stock minimo" styleClass="kpi-detalle"/>
+        </VBox>
+        <VBox fx:id="wcKpiSin" styleClass="resumen-filtro-item,alerta-critica" HBox.hgrow="ALWAYS">
+            <Label text="Sin stock" styleClass="kpi-titulo"/>
+            <Label fx:id="wcLblResSin" styleClass="resumen-filtro-valor"/>
+            <Label text="No se pueden vender" styleClass="kpi-detalle"/>
+        </VBox>
+    </HBox>
+
+    <VBox styleClass="tarjeta" VBox.vgrow="ALWAYS">
+        <HBox styleClass="barra-herramientas">
+            <CustomTextField fx:id="wcTxtBuscar" promptText="Buscar por codigo o nombre"
+                             styleClass="buscador" prefWidth="300.0">
+                <left><FontIcon iconLiteral="fth-search"/></left>
+            </CustomTextField>
+            <ComboBox fx:id="wcCmbFiltro" prefWidth="190.0" styleClass="selector-periodo"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button fx:id="wcBtnReponer" text="Reponer" onAction="#wcOnReponer" styleClass="button-outlined">
+                <graphic><FontIcon iconLiteral="fth-shopping-bag"/></graphic>
+            </Button>
+            <Button fx:id="wcBtnKardex" text="Kardex" onAction="#wcOnKardex" styleClass="button-outlined">
+                <graphic><FontIcon iconLiteral="fth-list"/></graphic>
+            </Button>
+        </HBox>
+
+        <TableView fx:id="wcTabla" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="wcColCodigo"    text="CODIGO"        prefWidth="110.0" minWidth="104.0"/>
+                <TableColumn fx:id="wcColNombre"    text="REPUESTO"      prefWidth="260.0" minWidth="160.0"/>
+                <TableColumn fx:id="wcColCategoria" text="CATEGORIA"     prefWidth="150.0"/>
+                <TableColumn fx:id="wcColStock"     text="STOCK"         prefWidth="110.0" minWidth="100.0"/>
+                <TableColumn fx:id="wcColMinimo"    text="MINIMO"        prefWidth="80.0"  minWidth="70.0"/>
+                <TableColumn fx:id="wcColCosto"     text="COSTO PROM."   prefWidth="110.0"/>
+                <TableColumn fx:id="wcColValor"     text="VALOR"         prefWidth="120.0"/>
+                <TableColumn fx:id="wcColPrecio"    text="PRECIO VENTA"  prefWidth="110.0"/>
+            </columns>
+        </TableView>
+
+        <WcPaginador fx:id="wcPaginador"/>
+    </VBox>
+</VBox>

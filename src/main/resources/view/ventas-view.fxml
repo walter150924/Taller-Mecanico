@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import atlantafx.base.controls.CustomTextField?>
+<?import com.taller.mecanico.ui.WcPaginador?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.taller.mecanico.controller.WcVentasController"
+      styleClass="pagina">
+
+    <fx:define>
+        <VBox fx:id="wcPanelDetalle" styleClass="drawer"
+              prefWidth="560.0" maxWidth="560.0" maxHeight="Infinity">
+            <HBox styleClass="drawer-header">
+                <StackPane styleClass="drawer-icono"><FontIcon iconLiteral="fth-file-text"/></StackPane>
+                <VBox spacing="2.0" HBox.hgrow="ALWAYS">
+                    <HBox spacing="10.0" alignment="CENTER_LEFT">
+                        <Label fx:id="wcLblDetComprobante" styleClass="drawer-titulo"/>
+                        <Label fx:id="wcLblDetEstado" styleClass="chip"/>
+                    </HBox>
+                    <Label fx:id="wcLblDetSubtitulo" styleClass="drawer-subtitulo"/>
+                </VBox>
+                <Button onAction="#wcOnCerrarDetalle" styleClass="flat,button-circle">
+                    <graphic><FontIcon iconLiteral="fth-x"/></graphic>
+                </Button>
+            </HBox>
+
+            <ScrollPane fitToWidth="true" styleClass="drawer-scroll" VBox.vgrow="ALWAYS">
+                <VBox styleClass="drawer-body">
+                    <Label text="CLIENTE" styleClass="seccion-form"/>
+                    <HBox styleClass="pv-cliente">
+                        <StackPane styleClass="avatar,avatar-grande"><Label fx:id="wcLblDetIniciales"/></StackPane>
+                        <VBox spacing="3.0">
+                            <Label fx:id="wcLblDetCliente" styleClass="pv-cliente-nombre"/>
+                            <Label fx:id="wcLblDetClienteDatos" styleClass="pv-cliente-dato"/>
+                        </VBox>
+                    </HBox>
+
+                    <Label text="DETALLE" styleClass="seccion-form"/>
+                    <TableView fx:id="wcTablaDetalle" prefHeight="240.0" styleClass="tabla-compacta">
+                        <columns>
+                            <TableColumn fx:id="wcColDetItem"     text="#"        prefWidth="40.0" minWidth="40.0" maxWidth="44.0" sortable="false"/>
+                            <TableColumn fx:id="wcColDetRepuesto" text="REPUESTO" prefWidth="200.0" sortable="false"/>
+                            <TableColumn fx:id="wcColDetCantidad" text="CANT."    prefWidth="60.0" sortable="false"/>
+                            <TableColumn fx:id="wcColDetPrecio"   text="P. UNIT." prefWidth="90.0" sortable="false"/>
+                            <TableColumn fx:id="wcColDetImporte"  text="IMPORTE"  prefWidth="96.0" sortable="false"/>
+                        </columns>
+                    </TableView>
+
+                    <VBox styleClass="pv-totales">
+                        <HBox styleClass="pv-total-fila">
+                            <Label fx:id="wcLblDetEtiquetaBase" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                            <Label fx:id="wcLblDetBase" styleClass="pv-total-valor"/>
+                        </HBox>
+                        <HBox styleClass="pv-total-fila">
+                            <Label fx:id="wcLblDetEtiquetaIgv" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                            <Label fx:id="wcLblDetIgv" styleClass="pv-total-valor"/>
+                        </HBox>
+                    </VBox>
+                    <VBox styleClass="pv-total-caja">
+                        <Label text="IMPORTE TOTAL" styleClass="pv-total-caja-etiqueta"/>
+                        <Label fx:id="wcLblDetTotal" styleClass="pv-total-caja-valor"/>
+                        <Label fx:id="wcLblDetLetras" styleClass="pv-total-caja-letras" wrapText="true"/>
+                    </VBox>
+                    <Label fx:id="wcLblDetObservacion" styleClass="pagina-subtitulo" wrapText="true"/>
+                </VBox>
+            </ScrollPane>
+
+            <HBox styleClass="drawer-footer">
+                <Button text="Guardar PDF" onAction="#wcOnDescargarDetalle" styleClass="button-outlined">
+                    <graphic><FontIcon iconLiteral="fth-download"/></graphic>
+                </Button>
+                <Button text="Imprimir" onAction="#wcOnImprimirDetalle" styleClass="accent">
+                    <graphic><FontIcon iconLiteral="fth-printer"/></graphic>
+                </Button>
+            </HBox>
+        </VBox>
+    </fx:define>
+
+    <HBox styleClass="pagina-cabecera">
+        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+            <Label text="Ventas" styleClass="pagina-titulo"/>
+            <Label text="Historial de comprobantes emitidos, impresion y reportes"
+                   styleClass="pagina-subtitulo"/>
+        </VBox>
+        <Button text="Exportar Excel" onAction="#wcOnExportarExcel" styleClass="button-outlined,boton-principal">
+            <graphic><FontIcon iconLiteral="fth-file-text"/></graphic>
+        </Button>
+        <Button text="Nueva venta" onAction="#wcOnNuevaVenta" styleClass="accent,boton-principal">
+            <graphic><FontIcon iconLiteral="fth-plus"/></graphic>
+        </Button>
+    </HBox>
+
+    <HBox styleClass="resumen-filtro">
+        <VBox styleClass="resumen-filtro-item" HBox.hgrow="ALWAYS">
+            <Label text="Comprobantes" styleClass="kpi-titulo"/>
+            <Label fx:id="wcLblResComprobantes" text="0" styleClass="resumen-filtro-valor"/>
+        </VBox>
+        <VBox styleClass="resumen-filtro-item" HBox.hgrow="ALWAYS">
+            <Label text="Base imponible" styleClass="kpi-titulo"/>
+            <Label fx:id="wcLblResBase" styleClass="resumen-filtro-valor"/>
+        </VBox>
+        <VBox styleClass="resumen-filtro-item" HBox.hgrow="ALWAYS">
+            <Label text="IGV" styleClass="kpi-titulo"/>
+            <Label fx:id="wcLblResIgv" styleClass="resumen-filtro-valor"/>
+        </VBox>
+        <VBox styleClass="resumen-filtro-item,destacado" HBox.hgrow="ALWAYS">
+            <Label text="Total vendido" styleClass="kpi-titulo"/>
+            <Label fx:id="wcLblResTotal" styleClass="resumen-filtro-valor"/>
+        </VBox>
+    </HBox>
+
+    <VBox styleClass="tarjeta" VBox.vgrow="ALWAYS">
+        <HBox styleClass="barra-herramientas">
+            <CustomTextField fx:id="wcTxtBuscar" promptText="Comprobante, cliente o DNI"
+                             styleClass="buscador" prefWidth="280.0">
+                <left><FontIcon iconLiteral="fth-search"/></left>
+            </CustomTextField>
+            <DatePicker fx:id="wcDpDesde" promptText="Desde" prefWidth="140.0" styleClass="selector-fecha"/>
+            <DatePicker fx:id="wcDpHasta" promptText="Hasta" prefWidth="140.0" styleClass="selector-fecha"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button fx:id="wcBtnVer" text="Ver" onAction="#wcOnVer" styleClass="button-outlined">
+                <graphic><FontIcon iconLiteral="fth-eye"/></graphic>
+            </Button>
+            <Button fx:id="wcBtnImprimir" text="Imprimir" onAction="#wcOnImprimir" styleClass="button-outlined">
+                <graphic><FontIcon iconLiteral="fth-printer"/></graphic>
+            </Button>
+            <Button fx:id="wcBtnAnular" text="Anular" onAction="#wcOnAnular" styleClass="button-outlined,danger">
+                <graphic><FontIcon iconLiteral="fth-slash"/></graphic>
+            </Button>
+        </HBox>
+
+        <TableView fx:id="wcTabla" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="wcColComprobante" text="COMPROBANTE" prefWidth="140.0" minWidth="136.0"/>
+                <TableColumn fx:id="wcColFecha"       text="FECHA"       prefWidth="136.0" minWidth="136.0"/>
+                <TableColumn fx:id="wcColCliente"     text="CLIENTE"     prefWidth="220.0" minWidth="160.0"/>
+                <TableColumn fx:id="wcColDni"         text="DNI"         prefWidth="96.0" minWidth="96.0"/>
+                <TableColumn fx:id="wcColBase"        text="BASE IMP."   prefWidth="110.0"/>
+                <TableColumn fx:id="wcColIgv"         text="IGV"         prefWidth="95.0"/>
+                <TableColumn fx:id="wcColTotal"       text="TOTAL"       prefWidth="115.0"/>
+                <TableColumn fx:id="wcColEstado"      text="ESTADO"      prefWidth="110.0" minWidth="110.0"/>
+            </columns>
+        </TableView>
+
+        <WcPaginador fx:id="wcPaginador"/>
+    </VBox>
+</VBox>

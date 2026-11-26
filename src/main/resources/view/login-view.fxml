@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import atlantafx.base.controls.CustomTextField?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<HBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.taller.mecanico.controller.WcLoginController"
+      styleClass="app,login-fondo"
+      prefWidth="900.0" prefHeight="580.0">
+
+    <Region styleClass="login-imagen" HBox.hgrow="ALWAYS"/>
+
+    <VBox fx:id="wcTarjeta" styleClass="login-formulario" HBox.hgrow="ALWAYS">
+        <Region VBox.vgrow="ALWAYS"/>
+        <Label text="Bienvenido" styleClass="login-titulo"/>
+        <Label text="Ingresa con tu usuario para continuar" styleClass="pagina-subtitulo"/>
+
+        <VBox styleClass="campo">
+            <Label text="Usuario" styleClass="campo-label"/>
+            <CustomTextField fx:id="wcTxtUsuario" promptText="Ej. admin">
+                <left><FontIcon iconLiteral="fth-user"/></left>
+            </CustomTextField>
+        </VBox>
+
+        <VBox styleClass="campo">
+            <Label text="Contraseña" styleClass="campo-label"/>
+            <PasswordField fx:id="wcTxtClave" promptText="Tu contraseña"/>
+        </VBox>
+
+        <Label fx:id="wcLblError" styleClass="login-error" wrapText="true" visible="false" managed="false"/>
+
+        <Button text="Ingresar" onAction="#wcOnIngresar" defaultButton="true"
+                styleClass="accent,login-boton" maxWidth="Infinity">
+            <graphic><FontIcon iconLiteral="fth-log-in"/></graphic>
+        </Button>
+        <Region VBox.vgrow="ALWAYS"/>
+    </VBox>
+</HBox>

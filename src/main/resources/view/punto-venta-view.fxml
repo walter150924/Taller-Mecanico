@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import atlantafx.base.controls.CustomTextField?>
+<?import atlantafx.base.controls.ToggleSwitch?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:id="wcRaiz"
+      fx:controller="com.taller.mecanico.controller.WcPuntoVentaController"
+      styleClass="pagina">
+
+    <HBox styleClass="pagina-cabecera">
+        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+            <Label text="Nueva venta" styleClass="pagina-titulo"/>
+            <Label text="Selecciona al cliente, arma el carrito y emite el comprobante"
+                   styleClass="pagina-subtitulo"/>
+        </VBox>
+        <Button text="Vaciar venta" onAction="#wcOnLimpiar" styleClass="button-outlined">
+            <graphic><FontIcon iconLiteral="fth-rotate-ccw"/></graphic>
+        </Button>
+    </HBox>
+
+    <HBox spacing="20.0" VBox.vgrow="ALWAYS">
+
+        <VBox spacing="20.0" HBox.hgrow="ALWAYS">
+
+            <VBox styleClass="tarjeta,pv-tarjeta">
+                <HBox styleClass="pv-tarjeta-cabecera">
+                    <StackPane styleClass="pv-paso"><Label text="1"/></StackPane>
+                    <VBox spacing="1.0" HBox.hgrow="ALWAYS">
+                        <Label text="Cliente" styleClass="grafico-titulo"/>
+                        <Label text="Busca por DNI o por nombres y apellidos" styleClass="grafico-subtitulo-compacto"/>
+                    </VBox>
+                </HBox>
+
+                <HBox spacing="12.0">
+                    <VBox styleClass="campo" prefWidth="230.0" minWidth="200.0">
+                        <Label text="DNI" styleClass="campo-label"/>
+                        <HBox spacing="6.0">
+                            <CustomTextField fx:id="wcTxtDni" promptText="8 digitos" HBox.hgrow="ALWAYS">
+                                <left><FontIcon iconLiteral="fth-credit-card"/></left>
+                            </CustomTextField>
+                            <Button fx:id="btnBuscarDni" onAction="#wcOnBuscarDni" styleClass="button-icon,accent,pv-boton-buscar">
+                                <graphic><FontIcon iconLiteral="fth-search"/></graphic>
+                                <tooltip><Tooltip text="Buscar DNI exacto (Enter)"/></tooltip>
+                            </Button>
+                        </HBox>
+                        <Label styleClass="campo-error" visible="false" managed="false"/>
+                    </VBox>
+                    <VBox styleClass="campo" HBox.hgrow="ALWAYS">
+                        <Label text="Nombres y apellidos" styleClass="campo-label"/>
+                        <CustomTextField fx:id="wcTxtNombreCliente" promptText="Ej. Maria Quispe">
+                            <left><FontIcon iconLiteral="fth-user"/></left>
+                        </CustomTextField>
+                        <Label styleClass="campo-error" visible="false" managed="false"/>
+                    </VBox>
+                </HBox>
+
+                <StackPane>
+                    <HBox fx:id="wcPanelSinCliente" styleClass="pv-cliente-vacio">
+                        <FontIcon iconLiteral="fth-user-plus"/>
+                        <Label text="Aun no hay cliente seleccionado. Escribe su DNI o su nombre y elige una sugerencia."
+                               wrapText="true"/>
+                    </HBox>
+                    <HBox fx:id="wcPanelCliente" styleClass="pv-cliente" visible="false" managed="false">
+                        <StackPane styleClass="avatar,avatar-grande"><Label fx:id="wcLblIniciales"/></StackPane>
+                        <VBox spacing="3.0" HBox.hgrow="ALWAYS">
+                            <Label fx:id="wcLblClienteNombre" styleClass="pv-cliente-nombre"/>
+                            <HBox spacing="14.0">
+                                <Label fx:id="wcLblClienteDni" styleClass="pv-cliente-dato">
+                                    <graphic><FontIcon iconLiteral="fth-credit-card"/></graphic>
+                                </Label>
+                                <Label fx:id="wcLblClienteEmail" styleClass="pv-cliente-dato">
+                                    <graphic><FontIcon iconLiteral="fth-mail"/></graphic>
+                                </Label>
+                                <Label fx:id="wcLblClienteTelefono" styleClass="pv-cliente-dato">
+                                    <graphic><FontIcon iconLiteral="fth-phone"/></graphic>
+                                </Label>
+                            </HBox>
+                        </VBox>
+                        <Button onAction="#wcOnQuitarCliente" styleClass="flat,button-circle">
+                            <graphic><FontIcon iconLiteral="fth-x"/></graphic>
+                            <tooltip><Tooltip text="Cambiar cliente"/></tooltip>
+                        </Button>
+                    </HBox>
+                </StackPane>
+            </VBox>
+
+            <VBox styleClass="tarjeta,pv-tarjeta" VBox.vgrow="ALWAYS">
+                <HBox styleClass="pv-tarjeta-cabecera">
+                    <StackPane styleClass="pv-paso"><Label text="2"/></StackPane>
+                    <VBox spacing="1.0" HBox.hgrow="ALWAYS">
+                        <Label text="Carrito de venta" styleClass="grafico-titulo"/>
+                        <Label text="Busca por codigo o nombre; la cantidad y el precio se pueden editar en la tabla"
+                               styleClass="grafico-subtitulo-compacto"/>
+                    </VBox>
+                    <Label fx:id="wcLblContadorItems" text="0 items" styleClass="chip,neutro"/>
+                </HBox>
+
+                <HBox spacing="10.0" alignment="CENTER_LEFT">
+                    <CustomTextField fx:id="wcTxtRepuesto" promptText="Buscar repuesto por codigo o nombre…"
+                                     styleClass="buscador" HBox.hgrow="ALWAYS">
+                        <left><FontIcon iconLiteral="fth-search"/></left>
+                    </CustomTextField>
+                    <Label text="Cant." styleClass="campo-label"/>
+                    <Spinner fx:id="wcSpnCantidad" editable="true" prefWidth="110.0" styleClass="pv-spinner"/>
+                </HBox>
+
+                <TableView fx:id="wcTablaCarrito" VBox.vgrow="ALWAYS" editable="true">
+                    <columns>
+                        <TableColumn fx:id="wcColItem"     text="#"           prefWidth="36.0"  minWidth="36.0" maxWidth="42.0" sortable="false"/>
+                        <TableColumn fx:id="wcColCodigo"   text="CODIGO"      prefWidth="92.0"  minWidth="90.0" sortable="false"/>
+                        <TableColumn fx:id="wcColRepuesto" text="REPUESTO"    prefWidth="200.0" minWidth="120.0" sortable="false"/>
+                        <TableColumn fx:id="wcColCantidad" text="CANTIDAD"    prefWidth="124.0" minWidth="124.0" maxWidth="130.0" sortable="false"/>
+                        <TableColumn fx:id="wcColPrecio"   text="P. UNITARIO" prefWidth="94.0"  minWidth="92.0" maxWidth="120.0" sortable="false"/>
+                        <TableColumn fx:id="wcColImporte"  text="IMPORTE"     prefWidth="100.0" minWidth="96.0" sortable="false"/>
+                        <TableColumn fx:id="wcColQuitar"   text=""            prefWidth="44.0"  minWidth="44.0" maxWidth="44.0" sortable="false"/>
+                    </columns>
+                </TableView>
+            </VBox>
+        </VBox>
+
+        <VBox styleClass="tarjeta,pv-resumen" prefWidth="336.0" minWidth="320.0" maxWidth="370.0">
+            <HBox styleClass="pv-tarjeta-cabecera">
+                <StackPane styleClass="pv-paso"><Label text="3"/></StackPane>
+                <VBox spacing="1.0" HBox.hgrow="ALWAYS">
+                    <Label text="Comprobante" styleClass="grafico-titulo"/>
+                    <Label fx:id="wcLblFecha" styleClass="grafico-subtitulo-compacto"/>
+                </VBox>
+            </HBox>
+
+            <ScrollPane fitToWidth="true" styleClass="drawer-scroll" VBox.vgrow="ALWAYS">
+                <VBox spacing="16.0">
+                    <VBox styleClass="campo">
+                        <Label text="Tipo de comprobante" styleClass="campo-label"/>
+                        <ComboBox fx:id="wcCmbTipo" maxWidth="Infinity"/>
+                    </VBox>
+                    <HBox styleClass="pv-numero">
+                        <Label text="N° de comprobante" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                        <Label fx:id="wcLblNumero" styleClass="pv-numero-valor"/>
+                    </HBox>
+
+                    <Label text="IMPUESTOS" styleClass="seccion-form"/>
+                    <VBox styleClass="pv-opciones">
+                        <HBox styleClass="pv-opcion">
+                            <VBox spacing="1.0" HBox.hgrow="ALWAYS">
+                                <Label text="Calcular IGV (18%)" styleClass="pv-opcion-titulo"/>
+                                <Label text="Desactivalo para operaciones exoneradas" styleClass="pv-opcion-detalle"/>
+                            </VBox>
+                            <ToggleSwitch fx:id="wcSwIgv" selected="true"/>
+                        </HBox>
+                        <Separator/>
+                        <HBox styleClass="pv-opcion">
+                            <VBox spacing="1.0" HBox.hgrow="ALWAYS">
+                                <Label text="Precios incluyen IGV" styleClass="pv-opcion-titulo"/>
+                                <Label fx:id="wcLblModoIgv" styleClass="pv-opcion-detalle"/>
+                            </VBox>
+                            <ToggleSwitch fx:id="wcSwIncluyeIgv" selected="true"/>
+                        </HBox>
+                    </VBox>
+
+                    <VBox styleClass="campo">
+                        <Label text="Observacion" styleClass="campo-label"/>
+                        <TextField fx:id="wcTxtObservacion" promptText="Opcional"/>
+                    </VBox>
+
+                    <Label text="PAGO" styleClass="seccion-form"/>
+                    <VBox styleClass="campo">
+                        <Label text="Metodo de pago *" styleClass="campo-label"/>
+                        <ComboBox fx:id="wcCmbMetodoPago" maxWidth="Infinity"/>
+                    </VBox>
+                </VBox>
+            </ScrollPane>
+
+            <VBox styleClass="pv-totales">
+                <HBox styleClass="pv-total-fila">
+                    <Label text="Articulos" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Label fx:id="wcLblArticulos" text="0" styleClass="pv-total-valor"/>
+                </HBox>
+                <HBox styleClass="pv-total-fila">
+                    <Label text="Subtotal (suma de importes)" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Label fx:id="wcLblSubtotal" styleClass="pv-total-valor"/>
+                </HBox>
+                <Separator/>
+                <HBox styleClass="pv-total-fila">
+                    <Label fx:id="wcLblEtiquetaBase" text="Base imponible (Op. gravada)" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Label fx:id="wcLblBase" styleClass="pv-total-valor"/>
+                </HBox>
+                <HBox styleClass="pv-total-fila">
+                    <Label fx:id="wcLblEtiquetaIgv" text="IGV (18%)" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Label fx:id="wcLblIgv" styleClass="pv-total-valor"/>
+                </HBox>
+            </VBox>
+
+            <VBox styleClass="pv-total-caja">
+                <Label text="TOTAL A PAGAR" styleClass="pv-total-caja-etiqueta"/>
+                <Label fx:id="wcLblTotal" styleClass="pv-total-caja-valor"/>
+                <Label fx:id="wcLblEnLetras" styleClass="pv-total-caja-letras" wrapText="true"/>
+            </VBox>
+
+            <Button fx:id="wcBtnRegistrar" text="Registrar venta  (F9)" onAction="#wcOnRegistrar"
+                    styleClass="accent,pv-boton-registrar" maxWidth="Infinity">
+                <graphic><FontIcon iconLiteral="fth-check-circle"/></graphic>
+            </Button>
+        </VBox>
+    </HBox>
+</VBox>
